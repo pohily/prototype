@@ -1,6 +1,7 @@
 from re import findall
 
 import pyautogui
+import pyperclip
 import pytesseract
 import pytest
 from PIL import Image
@@ -31,7 +32,8 @@ controls = {
     '+': (305, 475),
     '=': (370, 450),
     'backspace': (105, 285),
-    'screen': (235, 220)
+    'screen': (235, 220),
+    'result': (80, 210)
 }
 
 
@@ -63,6 +65,12 @@ def printer(expression):
     delete()
     pyautogui.leftClick(*controls['screen'])
     parser(expression)
+
+
+def copy_result() -> str:
+    pyautogui.click(*controls['result'], clicks=2, interval=0.25)
+    pyautogui.hotkey('ctrl', 'c')
+    return pyperclip.paste()
 
 
 @pytest.mark.parametrize("expression, result", tests)
